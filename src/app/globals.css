@@ -63,3 +63,532 @@ body {
   background-color: #1f2937;
   color: #f3f4f6;
 }
+
+/* ==========================================
+   日記帳スタイル - シンプル版
+   ========================================== */
+
+/* コンテナ */
+.diary-container {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #fffdf7;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.dark .diary-container {
+  background: #1f1d1a;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ヘッダー */
+.diary-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #8B5A2B 0%, #A0522D 100%);
+  color: white;
+}
+
+.diary-date-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.diary-date-num {
+  font-family: 'Klee One', serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.diary-date-info {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+.diary-title {
+  flex: 1;
+  font-family: 'Klee One', serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  text-align: center;
+}
+
+.diary-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Klee One', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.diary-badge-morning {
+  background: #FFF3E0;
+  color: #E65100;
+}
+
+.diary-badge-evening {
+  background: #EDE7F6;
+  color: #5E35B1;
+}
+
+/* ボディ */
+.diary-body {
+  padding: 24px;
+}
+
+/* セクション */
+.diary-section {
+  margin-bottom: 24px;
+}
+
+.diary-section:last-child {
+  margin-bottom: 0;
+}
+
+.diary-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Klee One', serif;
+  font-size: 0.95rem;
+  color: #6D4C41;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #E8E0D5;
+}
+
+.dark .diary-section-title {
+  color: #BCAAA4;
+  border-bottom-color: #3E3A36;
+}
+
+.diary-section-body {
+  /* コンテンツ用 */
+}
+
+/* フィールド */
+.diary-field {
+  margin-bottom: 16px;
+}
+
+.diary-field-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #8D6E63;
+  margin-bottom: 6px;
+}
+
+.dark .diary-field-label {
+  color: #A1887F;
+}
+
+/* テキストエリア */
+.diary-textarea {
+  width: 100%;
+  padding: 12px;
+  font-family: 'Klee One', serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #3E2723;
+  background: #FAFAF8;
+  border: 1px solid #E0D8CF;
+  border-radius: 8px;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.diary-textarea:focus {
+  outline: none;
+  border-color: #A1887F;
+  box-shadow: 0 0 0 3px rgba(161, 136, 127, 0.15);
+}
+
+.diary-textarea::placeholder {
+  color: #BCAAA4;
+}
+
+.dark .diary-textarea {
+  background: #2A2520;
+  border-color: #4A4540;
+  color: #E8E0D8;
+}
+
+.dark .diary-textarea::placeholder {
+  color: #6D6560;
+}
+
+/* タスク追加エリア */
+.diary-add-task {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* タスクアイテム */
+.diary-task {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #FAF8F5;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.diary-task:hover {
+  background: #F5F0EB;
+}
+
+.dark .diary-task {
+  background: #2A2520;
+}
+
+.dark .diary-task:hover {
+  background: #353028;
+}
+
+.diary-task-color {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.diary-task-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.diary-task-name {
+  display: block;
+  font-family: 'Klee One', serif;
+  font-size: 0.95rem;
+  color: #3E2723;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dark .diary-task-name {
+  color: #E8E0D8;
+}
+
+.diary-task-cat {
+  font-size: 0.75rem;
+}
+
+.diary-task-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #795548;
+}
+
+.dark .diary-task-time {
+  color: #A1887F;
+}
+
+.diary-task-est {
+  color: #9E9E9E;
+  font-size: 0.75rem;
+}
+
+.diary-task-input {
+  width: 50px;
+  padding: 4px 8px;
+  font-family: 'Klee One', serif;
+  font-size: 0.85rem;
+  text-align: center;
+  border: 1px solid #D7CCC8;
+  border-radius: 4px;
+  background: white;
+  color: #3E2723;
+}
+
+.dark .diary-task-input {
+  background: #1a1816;
+  border-color: #4A4540;
+  color: #E8E0D8;
+}
+
+.diary-task-input:focus {
+  outline: none;
+  border-color: #8D6E63;
+}
+
+.diary-task-hrs {
+  font-weight: 500;
+}
+
+.diary-task-del {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #BDBDBD;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+}
+
+.diary-task-del:hover {
+  background: #FFEBEE;
+  color: #E53935;
+}
+
+.dark .diary-task-del:hover {
+  background: rgba(229, 57, 53, 0.15);
+}
+
+/* 課題アイテム */
+.diary-issue {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #FFF8E1;
+  border-radius: 8px;
+  border-left: 3px solid #FFA000;
+}
+
+.dark .diary-issue {
+  background: rgba(255, 160, 0, 0.1);
+}
+
+.diary-issue-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FFA000;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.diary-issue-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.diary-issue-text {
+  display: block;
+  font-family: 'Klee One', serif;
+  font-size: 0.95rem;
+  color: #3E2723;
+}
+
+.dark .diary-issue-text {
+  color: #E8E0D8;
+}
+
+.diary-issue-cat {
+  font-size: 0.75rem;
+  color: #F57C00;
+}
+
+/* フッター */
+.diary-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #E8E0D5;
+}
+
+.dark .diary-footer {
+  border-top-color: #3E3A36;
+}
+
+.diary-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: #795548;
+}
+
+.dark .diary-stats {
+  color: #A1887F;
+}
+
+.diary-stat-main {
+  font-weight: 600;
+}
+
+.diary-stat-diff {
+  font-size: 0.8rem;
+}
+
+.diary-stat-diff.over {
+  color: #E53935;
+}
+
+.diary-stat-diff.under {
+  color: #43A047;
+}
+
+.diary-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ボタン */
+.diary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  font-family: 'Klee One', serif;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.diary-btn-primary {
+  background: #8D6E63;
+  color: white;
+  border: none;
+}
+
+.diary-btn-primary:hover {
+  background: #6D4C41;
+}
+
+.diary-btn-secondary {
+  background: transparent;
+  color: #8D6E63;
+  border: 1px solid #D7CCC8;
+}
+
+.dark .diary-btn-secondary {
+  color: #BCAAA4;
+  border-color: #4A4540;
+}
+
+.diary-btn-secondary:hover {
+  background: rgba(141, 110, 99, 0.08);
+}
+
+/* インプット */
+.diary-input {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 12px;
+  font-family: 'Klee One', serif;
+  font-size: 0.9rem;
+  border: 1px solid #D7CCC8;
+  border-radius: 8px;
+  background: white;
+  color: #3E2723;
+}
+
+.dark .diary-input {
+  background: #1a1816;
+  border-color: #4A4540;
+  color: #E8E0D8;
+}
+
+.diary-input:focus {
+  outline: none;
+  border-color: #8D6E63;
+}
+
+.diary-input::placeholder {
+  color: #BCAAA4;
+}
+
+.dark .diary-input::placeholder {
+  color: #6D6560;
+}
+
+/* セレクト */
+.diary-select {
+  padding: 10px 32px 10px 12px;
+  font-family: 'Klee One', serif;
+  font-size: 0.9rem;
+  border: 1px solid #D7CCC8;
+  border-radius: 8px;
+  background: white;
+  color: #3E2723;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23795548' d='M5 7L0 2h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.dark .diary-select {
+  background-color: #1a1816;
+  border-color: #4A4540;
+  color: #E8E0D8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23A1887F' d='M5 7L0 2h10z'/%3E%3C/svg%3E");
+}
+
+.diary-select:focus {
+  outline: none;
+  border-color: #8D6E63;
+}
+
+/* 空状態 */
+.diary-empty {
+  text-align: center;
+  padding: 24px;
+  color: #BCAAA4;
+  font-family: 'Klee One', serif;
+}
+
+.dark .diary-empty {
+  color: #6D6560;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .diary-header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .diary-title {
+    order: 3;
+    width: 100%;
+    text-align: left;
+  }
+
+  .diary-body {
+    padding: 16px;
+  }
+
+  .diary-add-task {
+    flex-direction: column;
+  }
+
+  .diary-footer {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .diary-actions {
+    justify-content: flex-end;
+  }
+}

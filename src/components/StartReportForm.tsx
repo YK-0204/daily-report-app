@@ -1,8 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Send, BookMarked, FileText, Clock } from 'lucide-react';
-import { Button, Input, Select, Card, CardContent, Modal } from '@/components/ui';
+import { Plus, BookMarked, FileText, Send, ListTodo } from 'lucide-react';
+import { Modal } from '@/components/ui';
+import {
+  DiaryPage,
+  DiarySection,
+  DiaryTaskItem,
+  DiaryFooter,
+} from '@/components/ui/DiaryPage';
 import { PlannedTask, Template, Category, StartDraft } from '@/types';
 import { generateId } from '@/lib/utils';
 
@@ -71,9 +77,9 @@ export function StartReportForm({
     setPlannedTasks(plannedTasks.filter((t) => t.id !== id));
   };
 
-  const updateTask = (id: string, updates: Partial<PlannedTask>) => {
+  const updateTaskHours = (id: string, hours: number) => {
     setPlannedTasks(
-      plannedTasks.map((t) => (t.id === id ? { ...t, ...updates } : t))
+      plannedTasks.map((t) => (t.id === id ? { ...t, estimatedHours: hours } : t))
     );
   };
 
@@ -119,132 +125,102 @@ export function StartReportForm({
 
   return (
     <>
-      <Card>
-        <CardContent className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5 text-blue-500" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                本日の予定タスク
-              </h2>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowTemplateModal(true)}
-              >
-                <BookMarked className="w-4 h-4 mr-1" />
-                テンプレート
-              </Button>
-              {plannedTasks.length > 0 && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowSaveTemplateModal(true)}
-                >
-                  <FileText className="w-4 h-4 mr-1" />
-                  保存
-                </Button>
-              )}
-            </div>
-          </div>
-
-          {/* New task input */}
-          <div className="flex flex-col sm:flex-row gap-2">
-            <div className="flex-1">
-              <Input
-                placeholder="タスクを入力..."
-                value={newTask.task}
-                onChange={(e) => setNewTask({ ...newTask, task: e.target.value })}
-                onKeyDown={(e) => e.key === 'Enter' && addTask()}
-              />
-            </div>
-            <div className="flex gap-2">
-              <Select
-                value={newTask.categoryId}
-                onChange={(e) => setNewTask({ ...newTask, categoryId: e.target.value })}
-                options={categories.map((c) => ({ value: c.id, label: c.name }))}
-                className="w-32"
-              />
-              <Input
-                type="number"
-                min={0.5}
-                max={24}
-                step={0.5}
-                value={newTask.estimatedHours}
-                onChange={(e) =>
-                  setNewTask({ ...newTask, estimatedHours: parseFloat(e.target.value) || 0 })
-                }
-                className="w-20"
-              />
-              <Button onClick={addTask} size="md">
-                <Plus className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Task list */}
-          <div className="space-y-2">
-            {plannedTasks.length === 0 ? (
-              <p className="text-center text-gray-500 dark:text-gray-400 py-4">
-                タスクがありません
-              </p>
-            ) : (
-              plannedTasks.map((task) => (
-                <div
-                  key={task.id}
-                  className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
-                >
-                  <div
-                    className="w-3 h-3 rounded-full shrink-0"
-                    style={{ backgroundColor: getCategoryColor(task.categoryId) }}
-                  />
-                  <span className="flex-1 text-gray-900 dark:text-white">
-                    {task.task}
-                  </span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {getCategoryName(task.categoryId)}
-                  </span>
-                  <input
-                    type="number"
-                    min={0.5}
-                    max={24}
-                    step={0.5}
-                    value={task.estimatedHours}
-                    onChange={(e) =>
-                      updateTask(task.id, {
-                        estimatedHours: parseFloat(e.target.value) || 0,
-                      })
-                    }
-                    className="w-16 px-2 py-1 text-sm border rounded bg-white dark:bg-gray-600 dark:border-gray-500 text-gray-900 dark:text-gray-100"
-                  />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">h</span>
-                  <button
-                    onClick={() => removeTask(task.id)}
-                    className="p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-900 rounded transition-colors"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              ))
-            )}
-          </div>
-
-          {/* Total and submit */}
+      <DiaryPage date={workDate} title="本日の予定" variant="morning">
+        {/* テンプレートボタン */}
+        <div className="flex justify-end gap-2 mb-4">
+          <button
+            onClick={() => setShowTemplateModal(true)}
+            className="diary-btn diary-btn-secondary"
+          >
+            <BookMarked className="w-4 h-4" />
+            テンプレート
+          </button>
           {plannedTasks.length > 0 && (
-            <div className="flex items-center justify-between pt-4 border-t dark:border-gray-600">
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                予定合計: <span className="font-semibold">{totalHours.toFixed(1)}時間</span>
-              </span>
-              <Button onClick={handleSubmit}>
-                <Send className="w-4 h-4 mr-2" />
-                勤務開始報告
-              </Button>
+            <button
+              onClick={() => setShowSaveTemplateModal(true)}
+              className="diary-btn diary-btn-secondary"
+            >
+              <FileText className="w-4 h-4" />
+              保存
+            </button>
+          )}
+        </div>
+
+        {/* タスク追加エリア */}
+        <DiarySection title="タスクを追加" icon={<Plus className="w-4 h-4 text-amber-600" />}>
+          <div className="diary-add-task">
+            <input
+              type="text"
+              placeholder="今日やることを書いてみましょう..."
+              value={newTask.task}
+              onChange={(e) => setNewTask({ ...newTask, task: e.target.value })}
+              onKeyDown={(e) => e.key === 'Enter' && addTask()}
+              className="diary-input"
+            />
+            <select
+              value={newTask.categoryId}
+              onChange={(e) => setNewTask({ ...newTask, categoryId: e.target.value })}
+              className="diary-select"
+            >
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            <input
+              type="number"
+              min={0.5}
+              max={24}
+              step={0.5}
+              value={newTask.estimatedHours}
+              onChange={(e) =>
+                setNewTask({ ...newTask, estimatedHours: parseFloat(e.target.value) || 0 })
+              }
+              className="diary-task-input"
+              style={{ width: '60px' }}
+            />
+            <span className="text-sm text-amber-700 dark:text-amber-300">h</span>
+            <button onClick={addTask} className="diary-btn diary-btn-primary">
+              追加
+            </button>
+          </div>
+        </DiarySection>
+
+        {/* タスクリスト */}
+        <DiarySection title="本日のタスク" icon={<ListTodo className="w-4 h-4 text-amber-600" />}>
+          {plannedTasks.length === 0 ? (
+            <div className="diary-empty">
+              まだタスクがありません。<br />
+              上のフォームからタスクを追加してください。
+            </div>
+          ) : (
+            <div>
+              {plannedTasks.map((task) => (
+                <DiaryTaskItem
+                  key={task.id}
+                  task={task.task}
+                  category={getCategoryName(task.categoryId)}
+                  categoryColor={getCategoryColor(task.categoryId)}
+                  hours={task.estimatedHours}
+                  onHoursChange={(hours) => updateTaskHours(task.id, hours)}
+                  onRemove={() => removeTask(task.id)}
+                />
+              ))}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </DiarySection>
+
+        {/* フッター */}
+        {plannedTasks.length > 0 && (
+          <DiaryFooter totalHours={totalHours}>
+            <button onClick={handleSubmit} className="diary-btn diary-btn-primary">
+              <Send className="w-4 h-4" />
+              勤務開始報告
+            </button>
+          </DiaryFooter>
+        )}
+      </DiaryPage>
 
       {/* Template selection modal */}
       <Modal
@@ -283,19 +259,31 @@ export function StartReportForm({
         title="テンプレートとして保存"
       >
         <div className="space-y-4">
-          <Input
-            label="テンプレート名"
-            value={newTemplateName}
-            onChange={(e) => setNewTemplateName(e.target.value)}
-            placeholder="例：週次ミーティング日"
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              テンプレート名
+            </label>
+            <input
+              type="text"
+              value={newTemplateName}
+              onChange={(e) => setNewTemplateName(e.target.value)}
+              placeholder="例：週次ミーティング日"
+              className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
+            />
+          </div>
           <div className="flex justify-end gap-2">
-            <Button variant="secondary" onClick={() => setShowSaveTemplateModal(false)}>
+            <button
+              onClick={() => setShowSaveTemplateModal(false)}
+              className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+            >
               キャンセル
-            </Button>
-            <Button onClick={saveAsTemplate}>
+            </button>
+            <button
+              onClick={saveAsTemplate}
+              className="diary-btn diary-btn-primary"
+            >
               保存
-            </Button>
+            </button>
           </div>
         </div>
       </Modal>
